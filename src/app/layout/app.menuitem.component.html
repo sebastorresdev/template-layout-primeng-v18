@@ -1,0 +1,59 @@
+<li>
+  @if (item().separator && item().items) {
+    <div class="uppercase text-sm my-4">
+      {{item().label}}
+    </div>
+    @for (subitem of item().items; track $index; let i = $index) {
+      <app-menuitem [item]="subitem" [index]="i"/>
+    }
+  }
+  @else{
+
+    @if (!item().items) {
+      <a
+        pRipple
+        [routerLink]="item().routerLink" routerLinkActive="!font-bold !text-primary-500"
+        [routerLinkActiveOptions]="item().routerLinkActiveOptions||{ paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+        [fragment]="item().fragment"
+        [queryParamsHandling]="item().queryParamsHandling"
+        [preserveFragment]="item().preserveFragment"
+        [skipLocationChange]="item().skipLocationChange"
+        [replaceUrl]="item().replaceUrl" [state]="item().state"
+        [queryParams]="item().queryParams"
+        [attr.target]="item().target" tabindex="0" pRipple
+        (click)="itemClick($event)"
+        class="flex items-center font-medium
+        cursor-pointer p-4 rounded-border text-surface-700
+        dark:text-surface-100 hover:bg-surface-100
+        dark:hover:bg-surface-700 duration-150
+        transition-colors p-ripple">
+          <i class="mr-2 pi" [ngClass]="item().icon"></i>
+          <span>{{item().label}}</span>
+      </a>
+    }
+
+    @if (item().items) {
+      <a
+        pRipple
+        class="flex items-center font-medium
+        cursor-pointer p-4 rounded-border text-surface-700
+        dark:text-surface-100 hover:bg-surface-100
+        dark:hover:bg-surface-700 duration-150
+        transition-colors p-ripple"
+        (click)="itemClick($event)">
+          <i class="mr-2 pi" [ngClass]="item().icon"></i>
+          <span>{{item().label}}</span>
+          <i class="pi ml-auto" [ngClass]="active ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+      </a>
+    }
+
+    @if(item().items && active) {
+      @for (subitem of item().items; track $index; let i = $index) {
+        <div class="ml-4">
+          <app-menuitem [item]="subitem" [index]="i" [parentKey]="key"/>
+        </div>
+      }
+    }
+  }
+
+</li>
